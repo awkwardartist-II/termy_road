@@ -6,6 +6,8 @@
 extern WINDOW *GameWindow;
 extern Entity player;
 
+int PlayerPoints = 0;
+
 // spawn in and initialize enemy
 Enemy::Enemy() {
     // initialize random spawn position
@@ -31,6 +33,8 @@ void Enemy::UpdatePos() {
     if(!spawned) {
         RandomPos(); // reset position & continue
         spawned = 1;
+
+        PlayerPoints++; // add one to point counter
         return;
     }
 
@@ -61,11 +65,10 @@ void Enemy::UpdatePos() {
         // holy shit you just died
         p_killed = 1;
     }
-    
+
     // now draw cars
     mvaddch(self.Y, self.X, '0');
     mvaddch(self.Y+1, self.X, '0');
     mvaddch(self.Y, self.X+1, '0');
     mvaddch(self.Y+1, self.X+1, '0');
-
 }

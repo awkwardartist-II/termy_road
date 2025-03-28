@@ -5,18 +5,25 @@
 #include <ncurses.h>
 #include <time.h>
 #include <stdlib.h>
+#include <string.h>
 
+// ncurses data
 WINDOW *GameWindow;
 int Width, Height;
 
+// enemy/entity data
 const int EnemyNum = 5;
 Enemy AllEnemies[EnemyNum];
 Entity player;
 
+// player and game-state data
 int PlayerAlive = 1;
+extern int PlayerPoints;
 const int UpdateMS = 75;
 
 int main() {
+    char PointStr[16] = {0}; // points display string
+
     // initialize RNG
     srand(time(NULL));
 
@@ -45,6 +52,12 @@ reset_game:
     // player control loop
     while(PlayerAlive) {
         clear();
+
+        // reset and display point string
+        memset(&PointStr[0], 0, 16); // clear point string
+        snprintf(&PointStr[0], 16, "Score: %d", PlayerPoints / EnemyNum); // set point string
+        mvaddstr(0,0,&PointStr[0]); // add score string
+        
         if(k.IsKeyPressed(KEY_Q)) {
             // wait for release and then quit
             while(k.IsKeyPressed(KEY_Q));
