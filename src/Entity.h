@@ -10,6 +10,7 @@ public:
     Entity self; // instance of self entity
     int spawned = 0; // set if object on screen
     int is_vertical;
+    int is_reverse;
     int p_killed = 0;
     
     Enemy(); // on initialization

@@ -22,7 +22,9 @@ extern int PlayerPoints;
 const int UpdateMS = 75;
 
 int main() {
-    char PointStr[16] = {0}; // points display string
+    // score display
+    const int score_len = 16; // display length
+    char score_str[score_len] = {0}; // points display string
 
     // initialize RNG
     srand(time(NULL));
@@ -54,9 +56,9 @@ reset_game:
         clear();
 
         // reset and display point string
-        memset(&PointStr[0], 0, 16); // clear point string
-        snprintf(&PointStr[0], 16, "Score: %d", PlayerPoints / EnemyNum); // set point string
-        mvaddstr(0,0,&PointStr[0]); // add score string
+        memset(&score_str[0], 0, score_len); // clear point string
+        snprintf(&score_str[0], score_len, "Score: %d", PlayerPoints / EnemyNum); // set point string
+        mvaddstr(0, 0, &score_str[0]); // add score string
         
         if(k.IsKeyPressed(KEY_Q)) {
             // wait for release and then quit
@@ -97,6 +99,7 @@ reset_game:
     clear();
     if(!PlayerAlive) {
         mvaddstr(Height / 2, (Width / 2) - 9, "You Died!");
+        mvaddstr((Height / 2)+1, (Width/2)-(strlen(score_str)+1), score_str);
         refresh();
     }
 

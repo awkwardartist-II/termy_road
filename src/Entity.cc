@@ -30,6 +30,7 @@ void Enemy::RandomPos() {
 
 // update and draw enemy
 void Enemy::UpdatePos() {
+    // respawn if not spawned
     if(!spawned) {
         RandomPos(); // reset position & continue
         spawned = 1;
@@ -37,7 +38,6 @@ void Enemy::UpdatePos() {
         PlayerPoints++; // add one to point counter
         return;
     }
-
     // update position
     if(!is_vertical) {
         self.X++;
