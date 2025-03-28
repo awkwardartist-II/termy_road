@@ -44,10 +44,28 @@ void Enemy::UpdatePos() {
         spawned = 0; // de-spawn to reposition later
     }
 
+    // check 4 collisions
     if(self.X == player.X && self.Y == player.Y) {
         // holy shit you just died
         p_killed = 1;
     }
+    else if(self.X+1 == player.X && self.Y == player.Y) {
+        // holy shit you just died
+        p_killed = 1;
+    }
+    else if(self.X == player.X && self.Y+1 == player.Y) {
+        // holy shit you just died
+        p_killed = 1;
+    }
+    else if(self.X+1 == player.X && self.Y+1 == player.Y) {
+        // holy shit you just died
+        p_killed = 1;
+    }
+    
     // now draw cars
     mvaddch(self.Y, self.X, '0');
+    mvaddch(self.Y+1, self.X, '0');
+    mvaddch(self.Y, self.X+1, '0');
+    mvaddch(self.Y+1, self.X+1, '0');
+
 }

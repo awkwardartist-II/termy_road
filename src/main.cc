@@ -14,6 +14,7 @@ Enemy AllEnemies[EnemyNum];
 Entity player;
 
 int PlayerAlive = 1;
+const int UpdateMS = 75;
 
 int main() {
     // initialize RNG
@@ -45,7 +46,8 @@ reset_game:
     while(PlayerAlive) {
         clear();
         if(k.IsKeyPressed(KEY_Q)) {
-            // end main game loop
+            // wait for release and then quit
+            while(k.IsKeyPressed(KEY_Q));
             break; 
         }
 
@@ -71,30 +73,38 @@ reset_game:
             mvaddch(player.Y, player.X, 'x');
         refresh();
 
-        usleep(100*1000);
+        usleep(UpdateMS*1000);
     }
     // reset enemies
     for(int i = 0; i < EnemyNum; ++i) {
         AllEnemies[i].spawned = 0;
         AllEnemies[i].p_killed = 0;
     }
+    // draw 'You Died!' screen
     clear();
-    mvaddstr(Height / 2, (Width / 2) - 9, "You Died!");
-    refresh();
+    if(!PlayerAlive) {
+        mvaddstr(Height / 2, (Width / 2) - 9, "You Died!");
+        refresh();
+    }
 
     // await keypress
-    while(1) {
-        if(k.IsKeyPressed(KEY_Q))
+    while(!PlayerAlive) {
+        if(k.IsKeyPressed(KEY_Q)) {
+            // wait for release and then quit
+            while(k.IsKeyPressed(KEY_Q));
             break;
-        if(k.IsKeyPressed(KEY_R)){
-            clear();
-            PlayerAlive = 1;
-            
+        }
+        if(k.IsKeyPressed(KEY_R)) {
             // when R key released, reset game
             while(k.IsKeyPressed(KEY_R));
+
+            // now reset game
+            clear();
+            PlayerAlive = 1;
             goto reset_game;
         }
     }
+    // end program
     k.StopReading(); // stop input thread
     endwin(); // end ncurses window
     return 0;
